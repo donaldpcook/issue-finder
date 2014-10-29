@@ -9,7 +9,9 @@ angular.module('issueFinder', ['ngResource'])
 
   .factory('repos', ['$resource', require('./services/repos')])
 
+  .controller('FormController', ['$scope', require('./form/form')])
+
   .controller('AppController', ['$scope', 'repos', function($scope, repos) {
-    //repos.get().$promise.then(function(a, b) {
-    //});
+    repos.get().$promise.then(function(a, b) {
+    });
   }]);

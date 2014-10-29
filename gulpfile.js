@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     watch = require('gulp-watch'),
     browserify = require('browserify'),
-    source = require('vinyl-source-stream');
+    source = require('vinyl-source-stream'),
+    notify = require('gulp-notify');
 
 gulp.task('browserify', function() {
   return browserify({
@@ -14,6 +15,7 @@ gulp.task('browserify', function() {
       debug: true
     })
     .bundle()
+    .on('error', handleErrors)
     .pipe(source('app.js'))
     .pipe(gulp.dest('./dest/js/'));
 });
@@ -36,3 +38,13 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['browserify', 'move', 'server', 'watch']);
+
+
+function handleErrors() {
+  var args = Array.prototype.slice.call(arguments);
+  notify.onError({
+    title: "Compile Error",
+    message: "<%= error.message %>"
+  }).apply(this, args);
+  this.emit('end'); // Keep gulp from hanging on this task
+}
