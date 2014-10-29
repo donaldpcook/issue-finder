@@ -1,6 +1,6 @@
 'use strict';
 
-var exports = function($resource) {
+var reposService = function($resource) {
   var Repos = $resource(
     'https://api.github.com/search/repositories',
     {
@@ -12,4 +12,4 @@ var exports = function($resource) {
   return Repos;
 };
 
-module.exports = exports;
+module.exports = reposService;

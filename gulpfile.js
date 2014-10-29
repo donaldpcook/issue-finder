@@ -7,7 +7,20 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     browserify = require('browserify'),
     source = require('vinyl-source-stream'),
-    notify = require('gulp-notify');
+    notify = require('gulp-notify'),
+    concat = require('gulp-concat'),
+    ngHtml2Js = require('gulp-ng-html2js');
+
+gulp.task('buildTemplates', function() {
+  gulp.src('./app/js/**/*.tpl.html')
+    .pipe(ngHtml2Js({
+      prefix: '/',
+      moduleName: 'partials'
+    }))
+    .pipe(concat('templates.js'))
+    .pipe(gulp.dest('./dest/js'))
+    .pipe(connect.reload());
+});
 
 gulp.task('browserify', function() {
   return browserify({
@@ -17,7 +30,8 @@ gulp.task('browserify', function() {
     .bundle()
     .on('error', handleErrors)
     .pipe(source('app.js'))
-    .pipe(gulp.dest('./dest/js/'));
+    .pipe(gulp.dest('./dest/js/'))
+    .pipe(connect.reload());
 });
 
 gulp.task('move', function() {
@@ -34,14 +48,16 @@ gulp.task('server', ['browserify'], function() {
 
 gulp.task('watch', function() {
   gulp.watch('./app/js/**/*.js', ['browserify']);
+  gulp.watch('./app/js/**/*.html', ['buildTemplates']);
   gulp.watch('./app/index.html', ['move']);
 });
 
-gulp.task('default', ['browserify', 'move', 'server', 'watch']);
+gulp.task('default', ['buildTemplates', 'browserify', 'move', 'server', 'watch']);
 
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
+
   notify.onError({
     title: "Compile Error",
     message: "<%= error.message %>"
