@@ -19,11 +19,9 @@ angular.module('issueFinder', ['ngResource', 'ui.router', 'partials'])
     });
   }])
 
-  .factory('repos', ['$resource', require('./services/repos')])
+  .factory('repos', require('./services/repos'))
 
-  .controller('FormController', ['$scope', require('./form/form')])
+  .controller('FormController', require('./form/form'))
 
-  .controller('AppController', ['$scope', 'repos', function($scope, repos) {
-    repos.get().$promise.then(function(a, b) {
-    });
-  }]);
+  .controller('AppController', function($scope) {
+  });
