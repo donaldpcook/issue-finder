@@ -24,6 +24,7 @@ angular.module('issueFinder', ['ngResource', 'ui.router', 'partials'])
   }])
 
   .factory('repos', require('./services/repos'))
+  .factory('issues', require('./services/issues'))
 
   .controller('FormController', require('./form/form'))
   .controller('ResultsController', require('./results/results'))
