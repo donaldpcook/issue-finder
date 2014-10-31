@@ -14,6 +14,10 @@ angular.module('issueFinder', ['ngResource', 'ui.router', 'partials'])
         'input': {
           controller: 'FormController',
           templateUrl: '/form/form.tpl.html'
+        },
+        'results': {
+          controller: 'ResultsController',
+          templateUrl: '/results/results.tpl.html'
         }
       }
     });
@@ -22,6 +26,7 @@ angular.module('issueFinder', ['ngResource', 'ui.router', 'partials'])
   .factory('repos', require('./services/repos'))
 
   .controller('FormController', require('./form/form'))
+  .controller('ResultsController', require('./results/results'))
 
   .controller('AppController', function($scope) {
   });
