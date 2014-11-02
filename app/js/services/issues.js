@@ -6,15 +6,17 @@ var issuesService = function($http, $q) {
   var deferred = $q.defer();
 
   issues.get = function(options) {
-    options = angular.extend({}, options);
+    options = angular.extend({
+      labels: ''
+    }, options);
 
     var parameters = [];
 
     if (options.q) { parameters.push('q=' + options.q); }
-    if (options.sort) { parameters.push('sort=' + options.sort); }
+    if (options.labels) { parameters.push('label:' + options.labels); }
 
-    $http.get('https://api.github.com/issues' +
-      (parameters.length ? '?' + parameters.join('&') : '')
+    $http.get('https://api.github.com/search/issues' +
+      (parameters.length ? '?' + parameters.join('+') : '')
     )
       .then(function(results) {
         deferred.resolve(new Issues(results));
@@ -23,14 +25,23 @@ var issuesService = function($http, $q) {
     return deferred.promise;
   };
 
-  return repos;
+  return issues;
 };
 
 function Issues(results) {
-  this.data = results.data.items;
+  this.data = results.data.items.map(function(issue) {
+    return new Issue(issue);
+  });
 }
 
 Issues.prototype = {
+};
+
+function Issue(issue) {
+  this.data = issue;
+}
+
+Issue.prototype = {
 };
 
 module.exports = issuesService;

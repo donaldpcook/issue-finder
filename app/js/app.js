@@ -23,6 +23,7 @@ angular.module('issueFinder', ['ngResource', 'ui.router', 'partials'])
     });
   }])
 
+  .factory('data', require('./services/data'))
   .factory('repos', require('./services/repos'))
   .factory('issues', require('./services/issues'))
 
