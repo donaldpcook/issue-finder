@@ -7,13 +7,15 @@ var issuesService = function($http, $q) {
 
   issues.get = function(options) {
     options = angular.extend({
-      labels: ''
+      label: 'documentation',
+      state: 'open'
     }, options);
 
     var parameters = [];
 
     if (options.q) { parameters.push('q=' + options.q); }
-    if (options.labels) { parameters.push('label:' + options.labels); }
+    if (options.label) { parameters.push('label:' + options.label); }
+    if (options.state) { parameters.push('state:' + options.state); }
 
     $http.get('https://api.github.com/search/issues' +
       (parameters.length ? '?' + parameters.join('+') : '')
