@@ -28,3 +28,5 @@ dest
 
 # Users Environment Variables
 .lock-wscript
+
+.sass-cache

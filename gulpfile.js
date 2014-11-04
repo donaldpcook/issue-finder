@@ -34,6 +34,13 @@ gulp.task('browserify', function() {
     .pipe(connect.reload());
 });
 
+gulp.task('styles', function() {
+  return gulp.src('app/scss/main.scss')
+    .pipe(sass({style: 'expanded'}))
+    .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
+    .pipe(gulp.dest('dest/css'));
+});
+
 gulp.task('move', function() {
   gulp.src('./app/index.html')
     .pipe(gulp.dest('dest'));
@@ -49,6 +56,7 @@ gulp.task('server', ['browserify'], function() {
 gulp.task('watch', function() {
   gulp.watch('./app/js/**/*.js', ['browserify']);
   gulp.watch('./app/js/**/*.html', ['buildTemplates']);
+  gulp.watch('./scss/**/*.scss', ['styles']);
   gulp.watch('./app/index.html', ['move']);
 });
 
